@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import emojis from "./emojis.js";
 
 export default function App() {
   const messageBoard = async () => {
@@ -14,6 +15,7 @@ export default function App() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [name, setName] = useState("");
+  const [emoji, setEmoji] = useState(false);
 
   const handleMessageInput = (event) => {
     setNewMessage(event.target.value);
@@ -21,6 +23,10 @@ export default function App() {
 
   const handleNameInput = (event) => {
     setName(event.target.value);
+  };
+  const handleEmojiClick = (emoji) => {
+    event.preventDefault();
+    setNewMessage((prev) => prev + emoji);
   };
 
   const sendMsg = async (event) => {
@@ -61,14 +67,36 @@ export default function App() {
           <p>
             <span>{message.user}</span>: {message.text}
           </p>
+          <p className="timestamp">{new Date(message.date).toLocaleString()}</p>
         </div>
       ))}
       <form className="form" onSubmit={sendMsg}>
         <label htmlFor="">Name:</label>
         <input type="text" onChange={handleNameInput} value={name} />
         <label htmlFor="">Say something here:</label>
-        <input type="text" onChange={handleMessageInput} value={newMessage} />
-
+        <div className="msginputdiv">
+          <input type="text" onChange={handleMessageInput} value={newMessage} />
+          <button onClick={() => setEmoji((prev) => !prev)}>😀</button>
+        </div>
+        <div className="emojidiv">
+          {emoji ? (
+            <section className="emojibtns">
+              {emojis.map((emoji, index) => {
+                return (
+                  <button
+                    type="button"
+                    key={index}
+                    onClick={() => handleEmojiClick(emoji)}
+                  >
+                    {emoji}
+                  </button>
+                );
+              })}
+            </section>
+          ) : (
+            ""
+          )}
+        </div>
         <button>Send</button>
       </form>
     </div>

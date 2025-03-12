@@ -18,7 +18,11 @@ router.post("/", (req, res) => {
     return res.status(400).json({ error: `User and text are required` });
   }
 
-  const newMessage = { user, text };
+  const newMessage = {
+    user,
+    text,
+    date: new Date().toISOString(),
+  };
   messageArray.push(newMessage);
   res.json(messageArray);
 });

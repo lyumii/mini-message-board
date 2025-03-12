@@ -44,3 +44,36 @@ button {
   padding: 0.5em;
   margin-top: 0.5em;
 }
+
+.emojibtns {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.emojibtns button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.emojibtns button:hover {
+  transform: scale(1.2);
+}
+.msginputdiv {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.msginputdiv input {
+  width: 100%;
+  border: none;
+  border-right: solid 1px #333;
+}
+
+.msginputdiv button {
+  background-color: white;
+  height: 100%;
+  border-radius: 0;
+}
