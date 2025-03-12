@@ -23,13 +23,28 @@ export default function App() {
     setName(event.target.value);
   };
 
-  const sendMsg = (event) => {
+  const sendMsg = async (event) => {
     event.preventDefault();
     if (newMessage.trim() === "") return;
     const userName = name.trim() === "" ? "Anon" : name;
-
     const newMsg = { user: userName, text: newMessage };
-    setMessages((prev) => [...prev, newMsg]);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/messages", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(newMsg),
+      });
+
+      if (!res.ok) {
+        throw new Error(`failed to post`);
+      }
+      const data = await res.json();
+      setMessages(data);
+    } catch (error) {
+      console.log(error, `honestly no idea what im doing`);
+    }
+
     setNewMessage("");
     setName("");
   };
