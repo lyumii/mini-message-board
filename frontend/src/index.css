@@ -1,0 +1,46 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #333;
+  color: antiquewhite;
+}
+
+.main {
+  background-color: #515050;
+  width: 30%;
+  padding: 2em;
+  margin: 1em;
+  border-radius: 10px;
+}
+
+h1 {
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.msg {
+  background-color: antiquewhite;
+  color: #333;
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
+.form {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+button {
+  background-color: antiquewhite;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5em;
+  margin-top: 0.5em;
+}
