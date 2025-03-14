@@ -6,6 +6,7 @@ export default function App() {
     try {
       const res = await fetch("http://localhost:5000/api/messages");
       const data = await res.json();
+      console.log("Fetched messages:", data);
       setMessages(data);
     } catch (error) {
       console.log(error, `no idea what im doing lol`);
@@ -24,7 +25,7 @@ export default function App() {
   const handleNameInput = (event) => {
     setName(event.target.value);
   };
-  const handleEmojiClick = (emoji) => {
+  const handleEmojiClick = (event, emoji) => {
     event.preventDefault();
     setNewMessage((prev) => prev + emoji);
   };
@@ -47,6 +48,7 @@ export default function App() {
       }
       const data = await res.json();
       setMessages(data);
+      await messageBoard();
     } catch (error) {
       console.log(error, `honestly no idea what im doing`);
     }
@@ -62,21 +64,32 @@ export default function App() {
   return (
     <div className="main">
       <h1>MessageBoard</h1>
-      {messages.map((message, index) => (
-        <div className="msg" key={index}>
-          <p>
-            <span>{message.user}</span>: {message.text}
-          </p>
-          <p className="timestamp">{new Date(message.date).toLocaleString()}</p>
-        </div>
-      ))}
+      {Array.isArray(messages) && messages.length > 0 ? (
+        messages.map((message, index) => (
+          <div className="msg" key={index}>
+            <p>
+              <span>{message.user}</span>: {message.text}
+            </p>
+            <p className="timestamp">
+              {message.date
+                ? new Date(message.date).toLocaleString()
+                : "No Date"}
+            </p>
+          </div>
+        ))
+      ) : (
+        <p>No messages yet.</p>
+      )}
+
       <form className="form" onSubmit={sendMsg}>
         <label htmlFor="">Name:</label>
         <input type="text" onChange={handleNameInput} value={name} />
         <label htmlFor="">Say something here:</label>
         <div className="msginputdiv">
           <input type="text" onChange={handleMessageInput} value={newMessage} />
-          <button onClick={() => setEmoji((prev) => !prev)}>😀</button>
+          <button type="button" onClick={() => setEmoji((prev) => !prev)}>
+            😀
+          </button>
         </div>
         <div className="emojidiv">
           {emoji ? (
@@ -86,7 +99,7 @@ export default function App() {
                   <button
                     type="button"
                     key={index}
-                    onClick={() => handleEmojiClick(emoji)}
+                    onClick={(e) => handleEmojiClick(e, emoji)}
                   >
                     {emoji}
                   </button>
