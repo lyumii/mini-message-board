@@ -23,4 +23,26 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  console.log("🛠️ DELETE request received for ID:", req.params.id); // Debugging log
+  try {
+    const messageId = req.params.id;
+
+    console.log("🔎 Received DELETE request for ID:", messageId);
+
+    if (!mongoose.Types.ObjectId.isValid(messageId)) {
+      return res.status(400).json({ error: "Invalid message ID format" });
+    }
+
+    const deleteMsg = await Message.findByIdAndDelete(objectId);
+
+    if (!deleteMsg) {
+      return res.status(404).json({ error: `Msg not found` });
+    }
+    res.json({ success: true, message: `Msg deleted` });
+  } catch (error) {
+    res.status(500).json({ error: `failed to delete msg` });
+  }
+});
+
 export default router;

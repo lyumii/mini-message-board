@@ -57,6 +57,30 @@ export default function App() {
     setName("");
   };
 
+  const deleteMsg = async (id) => {
+    const apiUrl = `http://localhost:5000/api/messages/${id}`;
+    console.log("🚀 Sending DELETE request to:", apiUrl); // Debugging
+
+    try {
+      const res = await fetch(apiUrl, { method: "DELETE" });
+
+      console.log("🛠️ Raw response:", res);
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log("✅ Delete response:", data);
+
+      if (data.success) {
+        console.log("🗑️ Msg deleted successfully!");
+      }
+    } catch (error) {
+      console.error("❌ Error deleting msg:", error);
+    }
+  };
+
   useEffect(() => {
     messageBoard();
   }, []);
@@ -75,6 +99,9 @@ export default function App() {
                 ? new Date(message.date).toLocaleString()
                 : "No Date"}
             </p>
+            <button type="button" onClick={() => deleteMsg(message._id)}>
+              🗑️
+            </button>
           </div>
         ))
       ) : (
