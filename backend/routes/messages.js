@@ -1,5 +1,6 @@
 import express from "express";
 import { Message } from "../models/messages.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -24,24 +25,27 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  console.log("🛠️ DELETE request received for ID:", req.params.id); // Debugging log
   try {
     const messageId = req.params.id;
-
-    console.log("🔎 Received DELETE request for ID:", messageId);
 
     if (!mongoose.Types.ObjectId.isValid(messageId)) {
       return res.status(400).json({ error: "Invalid message ID format" });
     }
 
-    const deleteMsg = await Message.findByIdAndDelete(objectId);
+    const objectId = new mongoose.Types.ObjectId(messageId);
 
-    if (!deleteMsg) {
-      return res.status(404).json({ error: `Msg not found` });
+    const messageExists = await Message.findById(objectId);
+
+    const deletedMessage = await Message.findByIdAndDelete(objectId);
+
+    if (!deletedMessage) {
+      return res.status(404).json({ error: "Message not found" });
     }
-    res.json({ success: true, message: `Msg deleted` });
-  } catch (error) {
-    res.status(500).json({ error: `failed to delete msg` });
+
+    res.json({ success: true, message: "Message deleted" });
+  } catch (err) {
+    console.error("❌ ERROR: Failed to delete message:", err);
+    res.status(500).json({ error: `Failed to delete message: ${err.message}` });
   }
 });
 
