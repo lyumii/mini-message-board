@@ -33,9 +33,6 @@ router.delete("/:id", async (req, res) => {
     }
 
     const objectId = new mongoose.Types.ObjectId(messageId);
-
-    const messageExists = await Message.findById(objectId);
-
     const deletedMessage = await Message.findByIdAndDelete(objectId);
 
     if (!deletedMessage) {
@@ -46,6 +43,36 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     console.error("❌ ERROR: Failed to delete message:", err);
     res.status(500).json({ error: `Failed to delete message: ${err.message}` });
+  }
+});
+
+router.put("/:id", async (req, res) => {
+  try {
+    const messageId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(messageId)) {
+      return res.status(400).json({ error: `invalid msg id format` });
+    }
+
+    const objectId = new mongoose.Types.ObjectId(messageId);
+    const { text } = req.body;
+
+    if (!text) {
+      return res.status(400).json({ error: `Msg content missing` });
+    }
+    const editedMsg = await Message.findByIdAndUpdate(
+      objectId,
+      { text },
+      { new: true }
+    );
+
+    if (!editedMsg) {
+      return res.status(404).json({ error: `msg not found` });
+    }
+    res.json({ success: true, message: `msg edited` });
+  } catch (err) {
+    console.error(`failed to edit`, err);
+    res.status(500).json({ error: `failed to edit msg: ${err.message}` });
   }
 });
 
