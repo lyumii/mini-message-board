@@ -24,7 +24,25 @@ export default function Chat() {
     }
   };
 
-  const editMessage = () => {};
+  const editMessage = async (id: string, newEdit: string) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: newEdit }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to edit message");
+      }
+
+      setMessages((prev) =>
+        prev.map((msg) => (msg._id === id ? { ...msg, text: newEdit } : msg))
+      );
+    } catch (error) {
+      console.error("Error editing message:", error);
+    }
+  };
 
   useEffect(() => {
     messageBoard();

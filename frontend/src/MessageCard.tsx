@@ -37,25 +37,22 @@ export default function MessageCard(props: CardProps) {
         ✏️
       </button>
       {edit ? (
-        <div>
+        <form
+          onSubmit={() => {
+            props.addEdit(props._id, newEdit);
+            setEdit(false);
+          }}
+        >
           <input
             type="text"
             value={newEdit}
             onChange={(e) => setNewEdit(e.target.value)}
           />
-          <button
-            type="button"
-            onClick={() => {
-              props.addEdit(props._id, newEdit);
-              setEdit(false);
-            }}
-          >
-            ✅
-          </button>
+          <button type="button">✅</button>
           <button type="button" onClick={() => setEdit(false)}>
             ❌
           </button>
-        </div>
+        </form>
       ) : (
         ""
       )}
