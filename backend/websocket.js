@@ -6,7 +6,7 @@ export function setUpWebSocket(server) {
   wss.on("connection", (socket) => {
     console.log(`a client connected`);
 
-    socket.send(`welcome to socket server`);
+    socket.send(JSON.stringify({ system: "Welcome to the socket server!" }));
 
     socket.on("message", (msg) => {
       const messageString = typeof msg === "string" ? msg : msg.toString();
