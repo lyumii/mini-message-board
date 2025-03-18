@@ -1,6 +1,6 @@
 import WebSocket from "ws";
 
-export default function setUpWebSocket(server) {
+export function setUpWebSocket(server) {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (socket) => {

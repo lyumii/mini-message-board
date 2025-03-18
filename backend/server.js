@@ -3,7 +3,7 @@ import http from "http";
 import cors from "cors";
 import router from "./routes/messages.js";
 import connectDB from "./database.js";
-import setUpWebSocket from "./websocket.js";
+import { setUpWebSocket } from "./websocket.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
