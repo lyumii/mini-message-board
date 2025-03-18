@@ -56,10 +56,11 @@ export default function SendMessage() {
   };
 
   useEffect(() => {
-    socket.onmessage = (event) => {
+    socket.onmessage = async (event) => {
       console.log("New message:", event.data);
       try {
-        const msg = JSON.parse(event.data);
+        const data = await event.data.text;
+        const msg = JSON.parse(data);
         setMessages((prev) => [...prev, msg]);
       } catch (error) {
         console.warn("non json msg", event.data);
