@@ -1,11 +1,15 @@
 import express from "express";
+import http from "http";
 import cors from "cors";
 import router from "./routes/messages.js";
 import connectDB from "./database.js";
+import setUpWebSocket from "./websocket.js";
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
+const server = http.createServer(app);
 
+setUpWebSocket(server);
 connectDB();
 
 app.use(cors());
@@ -16,6 +20,6 @@ app.get("/", (req, res) => {
   res.send(`We're in business!!`);
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server on port ${port}`);
 });

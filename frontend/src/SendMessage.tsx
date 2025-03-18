@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMessages } from "./MessageContext";
 import emojis from "./emojis";
+import socket from "./websocket";
 
 export default function SendMessage() {
   const { setMessages, messageBoard } = useMessages();
@@ -44,6 +45,7 @@ export default function SendMessage() {
       }
       const data = await res.json();
       setMessages((prevMessages) => [...prevMessages, data]);
+      socket.send(JSON.stringify(data));
       await messageBoard();
     } catch (error) {
       console.log(error, `honestly no idea what im doing`);
