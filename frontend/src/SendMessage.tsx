@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMessages } from "./MessageContext";
 import emojis from "./emojis";
 import socket from "./websocket";
@@ -54,6 +54,17 @@ export default function SendMessage() {
     setNewMessage("");
     setName("");
   };
+
+  useEffect(() => {
+    socket.onmessage = (event) => {
+      console.log("New message:", event.data);
+      setMessages((prevMessages) => [...prevMessages, JSON.parse(event.data)]);
+    };
+
+    return () => {
+      socket.onmessage = null;
+    };
+  }, [setMessages]);
 
   return (
     <form className="form" onSubmit={sendMsg}>
