@@ -17,7 +17,7 @@ export default function Chat() {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
 
-      const data = await res.json();
+      //   const data = await res.json();
     } catch (error) {
       console.error("Error deleting msg:", error);
       setMessages(prevMsgs);

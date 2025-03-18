@@ -3,7 +3,7 @@ import { useMessages } from "./MessageContext";
 import emojis from "./emojis";
 
 export default function SendMessage() {
-  const { messages, setMessages, messageBoard } = useMessages();
+  const { setMessages, messageBoard } = useMessages();
   const [newMessage, setNewMessage] = useState("");
   const [name, setName] = useState("");
   const [emoji, setEmoji] = useState(false);
