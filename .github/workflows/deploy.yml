@@ -3,7 +3,7 @@ name: Deploy Vite to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change this if your default branch is different
+      - main # ✅ Triggers on main updates
 
 permissions:
   contents: write
@@ -33,6 +33,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: frontend/dist  # The build output folder
+          branch: gh-pages # ✅ Only deploy to gh-pages
+          folder: frontend/dist # ✅ Correctly deploys built files
 
