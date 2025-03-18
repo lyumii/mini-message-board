@@ -9,9 +9,10 @@ export function setUpWebSocket(server) {
     socket.send(`welcome to socket server`);
 
     socket.on("message", (msg) => {
+      const messageString = typeof msg === "string" ? msg : msg.toString();
       wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
-          client.send(msg);
+          client.send(messageString);
         }
       });
     });

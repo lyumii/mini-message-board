@@ -57,10 +57,15 @@ export default function SendMessage() {
 
   useEffect(() => {
     socket.onmessage = async (event) => {
-      console.log("New message:", event.data);
+      let textData;
+      if (event.data instanceof Blob) {
+        textData = await event.data.text();
+      } else {
+        textData = event.data;
+      }
+
       try {
-        const data = await event.data.text;
-        const msg = JSON.parse(data);
+        const msg = JSON.parse(textData);
         setMessages((prev) => [...prev, msg]);
       } catch (error) {
         console.warn("non json msg", event.data);
