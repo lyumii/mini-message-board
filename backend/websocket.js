@@ -1,7 +1,7 @@
-import WebSocket from "ws";
+import { WebSocketServer } from "ws";
 
 export function setUpWebSocket(server) {
-  const wss = new WebSocket.Server({ server });
+  const wss = new WebSocketServer({ server });
 
   wss.on("connection", (socket) => {
     console.log(`a client connected`);
