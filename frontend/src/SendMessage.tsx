@@ -30,11 +30,14 @@ export default function SendMessage() {
     const newMsg = { user: userName, text: newMessage };
 
     try {
-      const res = await fetch("http://localhost:5000/api/messages", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(newMsg),
-      });
+      const res = await fetch(
+        "https://mini-message-board-znqy.onrender.com/api/messages",
+        {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify(newMsg),
+        }
+      );
 
       if (!res.ok) {
         throw new Error(`failed to post`);

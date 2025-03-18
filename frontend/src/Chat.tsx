@@ -6,7 +6,7 @@ export default function Chat() {
   const { messages, setMessages, messageBoard } = useMessages();
 
   const deleteMessage = async (id: string) => {
-    const apiUrl = `http://localhost:5000/api/messages/${id}`;
+    const apiUrl = `https://mini-message-board-znqy.onrender.com/api/messages/${id}`;
     const prevMsgs = messages;
     setMessages((prev) => prev.filter((msg) => msg._id !== id));
 
@@ -26,11 +26,14 @@ export default function Chat() {
 
   const editMessage = async (id: string, newEdit: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/messages/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: newEdit }),
-      });
+      const res = await fetch(
+        `https://mini-message-board-znqy.onrender.com/api/messages/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: newEdit }),
+        }
+      );
 
       if (!res.ok) {
         throw new Error("Failed to edit message");

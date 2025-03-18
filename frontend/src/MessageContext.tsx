@@ -18,7 +18,9 @@ export const MessagesProvider = ({ children }: MessagesProviderProps) => {
 
   const messageBoard = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/messages");
+      const res = await fetch(
+        "https://mini-message-board-znqy.onrender.com/api/messages"
+      );
       const data: CardProps[] = await res.json();
       console.log("Fetched messages:", data);
       setMessages(data);
