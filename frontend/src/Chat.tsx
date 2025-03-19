@@ -53,7 +53,7 @@ export default function Chat() {
   }, []);
 
   useEffect(() => {
-    const handleSocketMsg = async (event: MessageEvent) => {
+    socket.onmessage = async (event: MessageEvent) => {
       let textData;
       if (event.data instanceof Blob) {
         textData = await event.data.text();
