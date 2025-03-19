@@ -72,16 +72,7 @@ export default function Chat() {
             return prev.map((m) =>
               m._id === msg.id ? { ...m, text: msg.text } : m
             );
-          return [
-            ...prev,
-            {
-              ...msg,
-              date:
-                msg.date && !isNaN(new Date(msg.date).getTime())
-                  ? msg.date
-                  : new Date().toISOString(),
-            },
-          ];
+          return [...prev, msg];
         });
       } catch (error) {
         console.warn(`non json msg`, event.data);
@@ -98,9 +89,8 @@ export default function Chat() {
   return (
     <>
       <h1>MessageBoard</h1>
-      {messages
-        .filter((msg) => msg.date && !isNaN(new Date(msg.date).getTime()))
-        .map((message, index) => (
+      {messages.map((message, index) => {
+        return (
           <MessageCard
             key={index}
             _id={message._id}
@@ -110,7 +100,8 @@ export default function Chat() {
             deleteMsg={deleteMessage}
             addEdit={editMessage}
           />
-        ))}
+        );
+      })}
     </>
   );
 }
