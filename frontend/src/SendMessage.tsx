@@ -66,7 +66,7 @@ export default function SendMessage() {
 
       try {
         const msg = JSON.parse(textData);
-        if (!msg || !msg.type || !msg.date || !msg.text) return;
+        if (!msg || !msg.type) return;
         setMessages((prev) => [...prev, msg]);
       } catch (error) {
         console.warn("non json msg", event.data);
