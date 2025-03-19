@@ -72,7 +72,16 @@ export default function Chat() {
             return prev.map((m) =>
               m._id === msg.id ? { ...m, text: msg.text } : m
             );
-          return [...prev, msg];
+          return [
+            ...prev,
+            {
+              ...msg,
+              date:
+                msg.date && !isNaN(new Date(msg.date).getTime())
+                  ? msg.date
+                  : new Date().toISOString(),
+            },
+          ];
         });
       } catch (error) {
         console.warn(`non json msg`, event.data);
