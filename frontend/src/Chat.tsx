@@ -63,7 +63,7 @@ export default function Chat() {
 
       try {
         const msg = JSON.parse(textData);
-        if (!msg || !msg.type) return;
+        if (!msg || !msg.type || !msg.date || !msg.text) return;
 
         setMessages((prev) => {
           if (msg.type === "delete")
