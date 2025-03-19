@@ -82,12 +82,20 @@ export default function Chat() {
       }
     };
 
-    socket.addEventListener("message", handleSocketMsg);
-
     return () => {
-      socket.removeEventListener("message", handleSocketMsg);
+      socket.onmessage = null;
     };
   }, [setMessages]);
+
+  useEffect(() => {
+    const keepAlive = setInterval(() => {
+      fetch("https://mini-message-board-znqy.onrender.com/api/messages")
+        .then((res) => res.ok && console.log("Backend is awake!"))
+        .catch(() => console.log("Backend might be asleep..."));
+    }, 60000);
+
+    return () => clearInterval(keepAlive);
+  }, []);
 
   return (
     <>
