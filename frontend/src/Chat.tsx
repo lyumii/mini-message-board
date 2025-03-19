@@ -66,6 +66,9 @@ export default function Chat() {
         // if (!msg || !msg.type) return;
 
         setMessages((prev) => {
+          const alreadyExists = prev.some((m) => m._id === msg._id);
+          if (alreadyExists) return prev;
+
           if (msg.type === "delete")
             return prev.filter((m) => m._id !== msg.id);
           if (msg.type === "edit")
