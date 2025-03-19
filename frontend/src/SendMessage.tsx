@@ -4,7 +4,7 @@ import emojis from "./emojis";
 import socket from "./websocket";
 
 export default function SendMessage() {
-  const { setMessages, messageBoard } = useMessages();
+  const { messageBoard } = useMessages();
   const [newMessage, setNewMessage] = useState("");
   const [name, setName] = useState("");
   const [emoji, setEmoji] = useState(false);
@@ -44,7 +44,7 @@ export default function SendMessage() {
         throw new Error(`failed to post`);
       }
       const data = await res.json();
-      setMessages((prevMessages) => [...prevMessages, data]);
+      // setMessages((prevMessages) => [...prevMessages, data]);
       socket.send(JSON.stringify(data));
       await messageBoard();
     } catch (error) {
