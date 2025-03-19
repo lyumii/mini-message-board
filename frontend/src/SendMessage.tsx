@@ -56,7 +56,7 @@ export default function SendMessage() {
   };
 
   useEffect(() => {
-    socket.onmessage = async (event) => {
+    const handleSocketMsg = async (event: MessageEvent) => {
       let textData;
       if (event.data instanceof Blob) {
         textData = await event.data.text();
@@ -72,8 +72,10 @@ export default function SendMessage() {
       }
     };
 
+    socket.addEventListener("message", handleSocketMsg);
+
     return () => {
-      socket.onmessage = null;
+      socket.removeEventListener("message", handleSocketMsg);
     };
   }, [setMessages]);
 

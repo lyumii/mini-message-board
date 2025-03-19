@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useMessages } from "./MessageContext";
 import MessageCard from "./MessageCard";
+import socket from "./websocket";
 
 export default function Chat() {
   const { messages, setMessages, messageBoard } = useMessages();
@@ -17,7 +18,7 @@ export default function Chat() {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
 
-      //   const data = await res.json();
+      socket.send(JSON.stringify({ type: "delete", id }));
     } catch (error) {
       console.error("Error deleting msg:", error);
       setMessages(prevMsgs);
@@ -38,7 +39,7 @@ export default function Chat() {
       if (!res.ok) {
         throw new Error("Failed to edit message");
       }
-
+      socket.send(JSON.stringify({ type: "edit", id, text: newEdit }));
       setMessages((prev) =>
         prev.map((msg) => (msg._id === id ? { ...msg, text: newEdit } : msg))
       );
@@ -51,13 +52,45 @@ export default function Chat() {
     messageBoard();
   }, []);
 
+  useEffect(() => {
+    const handleSocketMsg = async (event: MessageEvent) => {
+      let textData;
+      if (event.data instanceof Blob) {
+        textData = await event.data.text();
+      } else {
+        textData = event.data;
+      }
+
+      try {
+        const msg = JSON.parse(textData);
+        setMessages((prev) => {
+          if (msg.type === "delete")
+            return prev.filter((m) => m._id !== msg.id);
+          if (msg.type === "edit")
+            return prev.map((m) =>
+              m._id === msg.id ? { ...m, text: msg.text } : m
+            );
+          return [...prev, msg];
+        });
+      } catch (error) {
+        console.warn(`non json msg`, event.data);
+      }
+    };
+
+    socket.addEventListener("message", handleSocketMsg);
+
+    return () => {
+      socket.removeEventListener("message", handleSocketMsg);
+    };
+  }, [setMessages]);
+
   return (
     <>
       <h1>MessageBoard</h1>
-      {messages.map((message) => {
+      {messages.map((message, index) => {
         return (
           <MessageCard
-            key={message._id}
+            key={index}
             _id={message._id}
             user={message.user}
             text={message.text}
