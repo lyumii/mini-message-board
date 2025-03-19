@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMessages } from "./MessageContext";
 import emojis from "./emojis";
 import socket from "./websocket";
@@ -55,30 +55,30 @@ export default function SendMessage() {
     setName("");
   };
 
-  useEffect(() => {
-    const handleSocketMsg = async (event: MessageEvent) => {
-      let textData;
-      if (event.data instanceof Blob) {
-        textData = await event.data.text();
-      } else {
-        textData = event.data;
-      }
+  // useEffect(() => {
+  //   const handleSocketMsg = async (event: MessageEvent) => {
+  //     let textData;
+  //     if (event.data instanceof Blob) {
+  //       textData = await event.data.text();
+  //     } else {
+  //       textData = event.data;
+  //     }
 
-      try {
-        const msg = JSON.parse(textData);
-        // if (!msg || !msg.type) return;
-        setMessages((prev) => [...prev, msg]);
-      } catch (error) {
-        console.warn("non json msg", event.data);
-      }
-    };
+  //     try {
+  //       const msg = JSON.parse(textData);
+  //       // if (!msg || !msg.type) return;
+  //       setMessages((prev) => [...prev, msg]);
+  //     } catch (error) {
+  //       console.warn("non json msg", event.data);
+  //     }
+  //   };
 
-    socket.addEventListener("message", handleSocketMsg);
+  //   socket.addEventListener("message", handleSocketMsg);
 
-    return () => {
-      socket.removeEventListener("message", handleSocketMsg);
-    };
-  }, [setMessages]);
+  //   return () => {
+  //     socket.removeEventListener("message", handleSocketMsg);
+  //   };
+  // }, [setMessages]);
 
   return (
     <form className="form" onSubmit={sendMsg}>
