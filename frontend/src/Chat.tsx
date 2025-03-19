@@ -89,7 +89,7 @@ export default function Chat() {
 
   useEffect(() => {
     const keepAlive = setInterval(() => {
-      fetch("https://mini-message-board-znqy.onrender.com/api/messages")
+      fetch("https://mini-message-board-znqy.onrender.com")
         .then((res) => res.ok && console.log("Backend is awake!"))
         .catch(() => console.log("Backend might be asleep..."));
     }, 60000);
