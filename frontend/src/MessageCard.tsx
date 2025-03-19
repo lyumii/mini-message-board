@@ -39,7 +39,7 @@ export default function MessageCard(props: CardProps) {
       {edit ? (
         <form
           onSubmit={(event) => {
-            event?.preventDefault();
+            event.preventDefault();
             props.addEdit(props._id, newEdit);
             setEdit(false);
           }}
