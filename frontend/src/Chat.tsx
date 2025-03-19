@@ -89,8 +89,9 @@ export default function Chat() {
   return (
     <>
       <h1>MessageBoard</h1>
-      {messages.map((message, index) => {
-        return (
+      {messages
+        .filter((msg) => msg.date && !isNaN(new Date(msg.date).getTime()))
+        .map((message, index) => (
           <MessageCard
             key={index}
             _id={message._id}
@@ -100,8 +101,7 @@ export default function Chat() {
             deleteMsg={deleteMessage}
             addEdit={editMessage}
           />
-        );
-      })}
+        ))}
     </>
   );
 }

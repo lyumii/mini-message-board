@@ -48,7 +48,7 @@ export default function MessageCard(props: CardProps) {
             value={newEdit}
             onChange={(e) => setNewEdit(e.target.value)}
           />
-          <button type="button">✅</button>
+          <button type="submit">✅</button>
           <button type="button" onClick={() => setEdit(false)}>
             ❌
           </button>
